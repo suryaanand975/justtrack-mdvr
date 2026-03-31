@@ -1,0 +1,738 @@
+================ Interface Description : Query Video =================
+
+API URL : http://119.23.207.22/StandardApiAction_getVideoFileInfo.action?
+Method  : GET / POST
+
+---------------------------------------------------------------
+Parameter       Value               Description
+---------------------------------------------------------------
+DevIDNO         500000              Device ID / Plate Number (Required)
+LOC             2                   Search location (1=device, 2=server, 4=download server)
+CHN             0                   Channel (0=channel1, 1=channel2, -1=all)
+YEAR            2014                Year
+MON             12                  Month
+DAY             10                  Day
+RECTYPE         -1                  Record type (0=normal,1=alarm,-1=all)
+FILEATTR        2                   File type (1=image,2=video)
+BEG             0                   Start time (seconds: 0–86399)
+END             86399               End time (seconds: 0–86399)
+ARM1            0                   Alarm identification 1
+ARM2            0                   Alarm identification 2
+RES             0                   Media type (0=audio+video,1=audio,2=video)
+STREAM          0                   Stream type (0=main,1=sub,-1=both)
+STORE           0                   Storage type
+LABEL           <optional>          Label
+jsession        <session_id>        Session ID from login API
+---------------------------------------------------------------
+
+
+================ Request Example =================
+
+http://119.23.207.22/StandardApiAction_getVideoFileInfo.action?DevIDNO=500000&LOC=2&CHN=0&YEAR=2014&MON=12&DAY=10&RECTYPE=-1&FILEATTR=2&BEG=0&END=86399&ARM1=0&ARM2=0&RES=0&STREAM=0&STORE=0&jsession=649b7687-6792-41a2-b9be-7806f2a0d3fa
+
+
+================ Success Response =================
+
+{
+  "result": 0,
+  "cmsserver": 1,
+  "files": [
+    {
+      "devIdno": "500000",
+      "chn": 1,
+      "beg": 31044,
+      "end": 32842,
+      "year": 10,
+      "mon": 1,
+      "day": 11,
+      "file": "H20100628-083724P2N2P0.264",
+      "len": 23211837,
+      "loc": 1,
+      "type": 0,
+      "recing": 0,
+      "PlaybackUrl": "http://localhost:6604/...",
+      "PlaybackUrlWs": "ws://localhost:6604/..."
+    }
+  ]
+}
+
+
+Explanation:
+- result        : 0 → Success
+- devIdno       : Device ID
+- chn           : Channel number
+- beg/end       : Start/End time (seconds)
+- year/mon/day  : Date (year + 2000)
+- file          : File name
+- len           : File size (bytes)
+- loc           : File location (1=device,2=server,4=download)
+- type          : Record type (0=normal,1=alarm)
+- recing        : Recording status (0=no,1=yes)
+- PlaybackUrl   : HTTP playback URL
+- PlaybackUrlWs : WebSocket playback URL (preferred)
+
+
+================ 1078 Device Response =================
+
+{
+  "result": 0,
+  "files": [
+    {
+      "devIdno": "500000",
+      "chn": 1,
+      "beg": 31044,
+      "end": 32842,
+      "res": 0,
+      "store": 0,
+      "stream": -1,
+      "PlaybackUrl": "http://localhost:6604/...",
+      "PlaybackUrlWs": "ws://localhost:6604/..."
+    }
+  ]
+}
+
+
+Explanation:
+- res      : Media type (0=audio+video,1=audio,2=video)
+- store    : Storage type
+- stream   : Stream type (-1=both,0=main,1=sub)
+
+
+================ Notes =======================================
+
+- jsession must be obtained from Login API
+- Supports cross-day video queries
+- BEG and END are in seconds (0–86399)
+- PlaybackUrlWs is preferred over PlaybackUrl
+- Multiple channels supported using CHN or chnMask
+- Video files may span across multiple days
+
+===============================================================
+
+
+================ Correct Result =====================================
+
+API URL : http://119.23.207.22/StandardApiAction_getVideoHistoryFile.action?DevIDNO=211163&LOC=0&CHN=3&YEAR=2026&MON=03&DAY=30&RECTYPE=-1&FILEATTR=2&BEG=60000&END=62000&ARM1=0&ARM2=0&RES=0&STREAM=1&STORE=0&YEARE=2026&MONE=03&DAYE=30&jsession=eca7ade4279848c3986faf124e522d35
+Method  : POST
+
+-------------------------------------------------------------------------------------------------------------
+Parameter       Value                                   Description
+-------------------------------------------------------------------------------------------------------------
+DevIDNO         211163                                  Device ID / Plate Number (Required)
+LOC             1                                       Search location (1=device, 2=server, 4=download server)
+CHN             3                                       Channel (0=channel1, 1=channel2, -1=all)
+YEAR            2026                                    Year
+MON             03                                      Month
+DAY             30                                      Day
+RECTYPE         0                                       Record type (0=normal,1=alarm,-1=all)
+FILEATTR        2                                       File type (1=image,2=video)
+BEG             60300                                   Start time (seconds: 0–86399)
+END             61200                                   End time (seconds: 0–86399)
+ARM1            0                                       Alarm identification 1
+ARM2            0                                       Alarm identification 2
+RES             0                                       Media type (0=audio+video,1=audio,2=video)
+STREAM          0                                       Stream type (0=main,1=sub,-1=both)
+STORE           0                                       Storage type
+jsession        c372d3447b4446f9a5aca8c588dc8ab7        Session ID from login API
+-----------------------------------------------------------------------------------------------------------------
+
+Response :
+
+{
+    "result": 0,
+    "files": [
+        {
+            "arm": 0,
+            "arm1": 0,
+            "arm2": 0,
+            "beg": 60612,
+            "chn": 7,
+            "chnMask": 0,
+            "clientIp": "119.23.207.22",
+            "clientIp2": "119.23.207.22",
+            "clientIp3": "119.23.207.22",
+            "clientPort": 6604,
+            "day": 30,
+            "devIdno": "211163",
+            "end": 61212,
+            "file": "/record/hd000/STV00007.DAT:1774889412_1774890012:535807432_535797208:424006255",
+            "label": null,
+            "lanip": "127.0.0.1",
+            "len": 171771431,
+            "loc": 1,
+            "mon": 3,
+            "mulChn": 0,
+            "mulPlay": 0,
+            "recing": 0,
+            "res": 0,
+            "store": 0,
+            "stream": 1,
+            "streamType": 0,
+            "svr": 0,
+            "type": 0,
+            "year": 26,
+            "mediaType": null,
+            "sourceId": null,
+            "DownTaskUrl": "http://119.23.207.22:80/StandardApiAction_addDownloadTask.action?jsession=c372d3447b4446f9a5aca8c588dc8ab7&did=211163&fbtm=2026-03-30 16:50:12&fetm=2026-03-30 17:00:12&sbtm=2026-03-30 16:50:12&setm=2026-03-30 17:00:12&lab=&fph=/record/hd000/STV00007.DAT:1774889412_1774890012:535807432_535797208:424006255&vtp=0&len=171771431&chn=7&dtp=2",
+            "DownUrl": "http://119.23.207.22:6604/3/5?DownType=3&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FLENGTH=171771431&FOFFSET=0&MTYPE=1&FPATH=/record/hd000/STV00007.DAT:1774889412_1774890012:535807432_535797208:424006255&SAVENAME=",
+            "PlaybackUrl": "http://119.23.207.22:6604/3/5?DownType=5&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FILESVR=0&FILECHN=7&FILEBEG=60612&FILEEND=61212&PLAYIFRM=0&PLAYFILE=/record/hd000/STV00007.DAT:1774889412_1774890012:535807432_535797208:424006255&PLAYBEG=0&PLAYEND=0&PLAYCHN=0&YEAR=26&MON=3&DAY=30",
+            "PlaybackUrlWs": "ws://119.23.207.22:6604/3/5?DownType=5&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FILESVR=0&FILECHN=7&FILEBEG=60612&FILEEND=61212&PLAYIFRM=0&PLAYFILE=/record/hd000/STV00007.DAT:1774889412_1774890012:535807432_535797208:424006255&PLAYBEG=0&PLAYEND=0&PLAYCHN=0&YEAR=26&MON=3&DAY=30"
+        },
+        {
+            "arm": 0,
+            "arm1": 0,
+            "arm2": 0,
+            "beg": 60012,
+            "chn": 7,
+            "chnMask": 0,
+            "clientIp": "119.23.207.22",
+            "clientIp2": "119.23.207.22",
+            "clientIp3": "119.23.207.22",
+            "clientPort": 6604,
+            "day": 30,
+            "devIdno": "211163",
+            "end": 60612,
+            "file": "/record/hd000/STV00007.DAT:1774888812_1774889412:535817608_535807432:252234824",
+            "label": null,
+            "lanip": "127.0.0.1",
+            "len": 171921761,
+            "loc": 1,
+            "mon": 3,
+            "mulChn": 0,
+            "mulPlay": 0,
+            "recing": 0,
+            "res": 0,
+            "store": 0,
+            "stream": 1,
+            "streamType": 0,
+            "svr": 0,
+            "type": 0,
+            "year": 26,
+            "mediaType": null,
+            "sourceId": null,
+            "DownTaskUrl": "http://119.23.207.22:80/StandardApiAction_addDownloadTask.action?jsession=c372d3447b4446f9a5aca8c588dc8ab7&did=211163&fbtm=2026-03-30 16:40:12&fetm=2026-03-30 16:50:12&sbtm=2026-03-30 16:40:12&setm=2026-03-30 16:50:12&lab=&fph=/record/hd000/STV00007.DAT:1774888812_1774889412:535817608_535807432:252234824&vtp=0&len=171921761&chn=7&dtp=2",
+            "DownUrl": "http://119.23.207.22:6604/3/5?DownType=3&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FLENGTH=171921761&FOFFSET=0&MTYPE=1&FPATH=/record/hd000/STV00007.DAT:1774888812_1774889412:535817608_535807432:252234824&SAVENAME=",
+            "PlaybackUrl": "http://119.23.207.22:6604/3/5?DownType=5&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FILESVR=0&FILECHN=7&FILEBEG=60012&FILEEND=60612&PLAYIFRM=0&PLAYFILE=/record/hd000/STV00007.DAT:1774888812_1774889412:535817608_535807432:252234824&PLAYBEG=0&PLAYEND=0&PLAYCHN=0&YEAR=26&MON=3&DAY=30",
+            "PlaybackUrlWs": "ws://119.23.207.22:6604/3/5?DownType=5&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FILESVR=0&FILECHN=7&FILEBEG=60012&FILEEND=60612&PLAYIFRM=0&PLAYFILE=/record/hd000/STV00007.DAT:1774888812_1774889412:535817608_535807432:252234824&PLAYBEG=0&PLAYEND=0&PLAYCHN=0&YEAR=26&MON=3&DAY=30"
+        },
+        {
+            "arm": 0,
+            "arm1": 0,
+            "arm2": 0,
+            "beg": 60612,
+            "chn": 6,
+            "chnMask": 0,
+            "clientIp": "119.23.207.22",
+            "clientIp2": "119.23.207.22",
+            "clientIp3": "119.23.207.22",
+            "clientPort": 6604,
+            "day": 30,
+            "devIdno": "211163",
+            "end": 61212,
+            "file": "/record/hd000/STV00006.DAT:1774889412_1774890012:535807432_535797208:426324816",
+            "label": null,
+            "lanip": "127.0.0.1",
+            "len": 173137752,
+            "loc": 1,
+            "mon": 3,
+            "mulChn": 0,
+            "mulPlay": 0,
+            "recing": 0,
+            "res": 0,
+            "store": 0,
+            "stream": 1,
+            "streamType": 0,
+            "svr": 0,
+            "type": 0,
+            "year": 26,
+            "mediaType": null,
+            "sourceId": null,
+            "DownTaskUrl": "http://119.23.207.22:80/StandardApiAction_addDownloadTask.action?jsession=c372d3447b4446f9a5aca8c588dc8ab7&did=211163&fbtm=2026-03-30 16:50:12&fetm=2026-03-30 17:00:12&sbtm=2026-03-30 16:50:12&setm=2026-03-30 17:00:12&lab=&fph=/record/hd000/STV00006.DAT:1774889412_1774890012:535807432_535797208:426324816&vtp=0&len=173137752&chn=6&dtp=2",
+            "DownUrl": "http://119.23.207.22:6604/3/5?DownType=3&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FLENGTH=173137752&FOFFSET=0&MTYPE=1&FPATH=/record/hd000/STV00006.DAT:1774889412_1774890012:535807432_535797208:426324816&SAVENAME=",
+            "PlaybackUrl": "http://119.23.207.22:6604/3/5?DownType=5&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FILESVR=0&FILECHN=6&FILEBEG=60612&FILEEND=61212&PLAYIFRM=0&PLAYFILE=/record/hd000/STV00006.DAT:1774889412_1774890012:535807432_535797208:426324816&PLAYBEG=0&PLAYEND=0&PLAYCHN=0&YEAR=26&MON=3&DAY=30",
+            "PlaybackUrlWs": "ws://119.23.207.22:6604/3/5?DownType=5&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FILESVR=0&FILECHN=6&FILEBEG=60612&FILEEND=61212&PLAYIFRM=0&PLAYFILE=/record/hd000/STV00006.DAT:1774889412_1774890012:535807432_535797208:426324816&PLAYBEG=0&PLAYEND=0&PLAYCHN=0&YEAR=26&MON=3&DAY=30"
+        },
+        {
+            "arm": 0,
+            "arm1": 0,
+            "arm2": 0,
+            "beg": 60012,
+            "chn": 6,
+            "chnMask": 0,
+            "clientIp": "119.23.207.22",
+            "clientIp2": "119.23.207.22",
+            "clientIp3": "119.23.207.22",
+            "clientPort": 6604,
+            "day": 30,
+            "devIdno": "211163",
+            "end": 60612,
+            "file": "/record/hd000/STV00006.DAT:1774888812_1774889412:535817608_535807432:253187064",
+            "label": null,
+            "lanip": "127.0.0.1",
+            "len": 172489469,
+            "loc": 1,
+            "mon": 3,
+            "mulChn": 0,
+            "mulPlay": 0,
+            "recing": 0,
+            "res": 0,
+            "store": 0,
+            "stream": 1,
+            "streamType": 0,
+            "svr": 0,
+            "type": 0,
+            "year": 26,
+            "mediaType": null,
+            "sourceId": null,
+            "DownTaskUrl": "http://119.23.207.22:80/StandardApiAction_addDownloadTask.action?jsession=c372d3447b4446f9a5aca8c588dc8ab7&did=211163&fbtm=2026-03-30 16:40:12&fetm=2026-03-30 16:50:12&sbtm=2026-03-30 16:40:12&setm=2026-03-30 16:50:12&lab=&fph=/record/hd000/STV00006.DAT:1774888812_1774889412:535817608_535807432:253187064&vtp=0&len=172489469&chn=6&dtp=2",
+            "DownUrl": "http://119.23.207.22:6604/3/5?DownType=3&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FLENGTH=172489469&FOFFSET=0&MTYPE=1&FPATH=/record/hd000/STV00006.DAT:1774888812_1774889412:535817608_535807432:253187064&SAVENAME=",
+            "PlaybackUrl": "http://119.23.207.22:6604/3/5?DownType=5&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FILESVR=0&FILECHN=6&FILEBEG=60012&FILEEND=60612&PLAYIFRM=0&PLAYFILE=/record/hd000/STV00006.DAT:1774888812_1774889412:535817608_535807432:253187064&PLAYBEG=0&PLAYEND=0&PLAYCHN=0&YEAR=26&MON=3&DAY=30",
+            "PlaybackUrlWs": "ws://119.23.207.22:6604/3/5?DownType=5&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FILESVR=0&FILECHN=6&FILEBEG=60012&FILEEND=60612&PLAYIFRM=0&PLAYFILE=/record/hd000/STV00006.DAT:1774888812_1774889412:535817608_535807432:253187064&PLAYBEG=0&PLAYEND=0&PLAYCHN=0&YEAR=26&MON=3&DAY=30"
+        },
+        {
+            "arm": 0,
+            "arm1": 0,
+            "arm2": 0,
+            "beg": 60612,
+            "chn": 5,
+            "chnMask": 0,
+            "clientIp": "119.23.207.22",
+            "clientIp2": "119.23.207.22",
+            "clientIp3": "119.23.207.22",
+            "clientPort": 6604,
+            "day": 30,
+            "devIdno": "211163",
+            "end": 61212,
+            "file": "/record/hd000/STV00005.DAT:1774889412_1774890012:535807432_535797208:430021390",
+            "label": null,
+            "lanip": "127.0.0.1",
+            "len": 175203906,
+            "loc": 1,
+            "mon": 3,
+            "mulChn": 0,
+            "mulPlay": 0,
+            "recing": 0,
+            "res": 0,
+            "store": 0,
+            "stream": 1,
+            "streamType": 0,
+            "svr": 0,
+            "type": 0,
+            "year": 26,
+            "mediaType": null,
+            "sourceId": null,
+            "DownTaskUrl": "http://119.23.207.22:80/StandardApiAction_addDownloadTask.action?jsession=c372d3447b4446f9a5aca8c588dc8ab7&did=211163&fbtm=2026-03-30 16:50:12&fetm=2026-03-30 17:00:12&sbtm=2026-03-30 16:50:12&setm=2026-03-30 17:00:12&lab=&fph=/record/hd000/STV00005.DAT:1774889412_1774890012:535807432_535797208:430021390&vtp=0&len=175203906&chn=5&dtp=2",
+            "DownUrl": "http://119.23.207.22:6604/3/5?DownType=3&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FLENGTH=175203906&FOFFSET=0&MTYPE=1&FPATH=/record/hd000/STV00005.DAT:1774889412_1774890012:535807432_535797208:430021390&SAVENAME=",
+            "PlaybackUrl": "http://119.23.207.22:6604/3/5?DownType=5&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FILESVR=0&FILECHN=5&FILEBEG=60612&FILEEND=61212&PLAYIFRM=0&PLAYFILE=/record/hd000/STV00005.DAT:1774889412_1774890012:535807432_535797208:430021390&PLAYBEG=0&PLAYEND=0&PLAYCHN=0&YEAR=26&MON=3&DAY=30",
+            "PlaybackUrlWs": "ws://119.23.207.22:6604/3/5?DownType=5&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FILESVR=0&FILECHN=5&FILEBEG=60612&FILEEND=61212&PLAYIFRM=0&PLAYFILE=/record/hd000/STV00005.DAT:1774889412_1774890012:535807432_535797208:430021390&PLAYBEG=0&PLAYEND=0&PLAYCHN=0&YEAR=26&MON=3&DAY=30"
+        },
+        {
+            "arm": 0,
+            "arm1": 0,
+            "arm2": 0,
+            "beg": 60012,
+            "chn": 5,
+            "chnMask": 0,
+            "clientIp": "119.23.207.22",
+            "clientIp2": "119.23.207.22",
+            "clientIp3": "119.23.207.22",
+            "clientPort": 6604,
+            "day": 30,
+            "devIdno": "211163",
+            "end": 60612,
+            "file": "/record/hd000/STV00005.DAT:1774888812_1774889412:535817608_535807432:254817484",
+            "label": null,
+            "lanip": "127.0.0.1",
+            "len": 173792201,
+            "loc": 1,
+            "mon": 3,
+            "mulChn": 0,
+            "mulPlay": 0,
+            "recing": 0,
+            "res": 0,
+            "store": 0,
+            "stream": 1,
+            "streamType": 0,
+            "svr": 0,
+            "type": 0,
+            "year": 26,
+            "mediaType": null,
+            "sourceId": null,
+            "DownTaskUrl": "http://119.23.207.22:80/StandardApiAction_addDownloadTask.action?jsession=c372d3447b4446f9a5aca8c588dc8ab7&did=211163&fbtm=2026-03-30 16:40:12&fetm=2026-03-30 16:50:12&sbtm=2026-03-30 16:40:12&setm=2026-03-30 16:50:12&lab=&fph=/record/hd000/STV00005.DAT:1774888812_1774889412:535817608_535807432:254817484&vtp=0&len=173792201&chn=5&dtp=2",
+            "DownUrl": "http://119.23.207.22:6604/3/5?DownType=3&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FLENGTH=173792201&FOFFSET=0&MTYPE=1&FPATH=/record/hd000/STV00005.DAT:1774888812_1774889412:535817608_535807432:254817484&SAVENAME=",
+            "PlaybackUrl": "http://119.23.207.22:6604/3/5?DownType=5&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FILESVR=0&FILECHN=5&FILEBEG=60012&FILEEND=60612&PLAYIFRM=0&PLAYFILE=/record/hd000/STV00005.DAT:1774888812_1774889412:535817608_535807432:254817484&PLAYBEG=0&PLAYEND=0&PLAYCHN=0&YEAR=26&MON=3&DAY=30",
+            "PlaybackUrlWs": "ws://119.23.207.22:6604/3/5?DownType=5&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FILESVR=0&FILECHN=5&FILEBEG=60012&FILEEND=60612&PLAYIFRM=0&PLAYFILE=/record/hd000/STV00005.DAT:1774888812_1774889412:535817608_535807432:254817484&PLAYBEG=0&PLAYEND=0&PLAYCHN=0&YEAR=26&MON=3&DAY=30"
+        },
+        {
+            "arm": 0,
+            "arm1": 0,
+            "arm2": 0,
+            "beg": 60612,
+            "chn": 4,
+            "chnMask": 0,
+            "clientIp": "119.23.207.22",
+            "clientIp2": "119.23.207.22",
+            "clientIp3": "119.23.207.22",
+            "clientPort": 6604,
+            "day": 30,
+            "devIdno": "211163",
+            "end": 61212,
+            "file": "/record/hd000/STV00004.DAT:1774889412_1774890012:535807432_535797208:426758946",
+            "label": null,
+            "lanip": "127.0.0.1",
+            "len": 173499850,
+            "loc": 1,
+            "mon": 3,
+            "mulChn": 0,
+            "mulPlay": 0,
+            "recing": 0,
+            "res": 0,
+            "store": 0,
+            "stream": 1,
+            "streamType": 0,
+            "svr": 0,
+            "type": 0,
+            "year": 26,
+            "mediaType": null,
+            "sourceId": null,
+            "DownTaskUrl": "http://119.23.207.22:80/StandardApiAction_addDownloadTask.action?jsession=c372d3447b4446f9a5aca8c588dc8ab7&did=211163&fbtm=2026-03-30 16:50:12&fetm=2026-03-30 17:00:12&sbtm=2026-03-30 16:50:12&setm=2026-03-30 17:00:12&lab=&fph=/record/hd000/STV00004.DAT:1774889412_1774890012:535807432_535797208:426758946&vtp=0&len=173499850&chn=4&dtp=2",
+            "DownUrl": "http://119.23.207.22:6604/3/5?DownType=3&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FLENGTH=173499850&FOFFSET=0&MTYPE=1&FPATH=/record/hd000/STV00004.DAT:1774889412_1774890012:535807432_535797208:426758946&SAVENAME=",
+            "PlaybackUrl": "http://119.23.207.22:6604/3/5?DownType=5&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FILESVR=0&FILECHN=4&FILEBEG=60612&FILEEND=61212&PLAYIFRM=0&PLAYFILE=/record/hd000/STV00004.DAT:1774889412_1774890012:535807432_535797208:426758946&PLAYBEG=0&PLAYEND=0&PLAYCHN=0&YEAR=26&MON=3&DAY=30",
+            "PlaybackUrlWs": "ws://119.23.207.22:6604/3/5?DownType=5&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FILESVR=0&FILECHN=4&FILEBEG=60612&FILEEND=61212&PLAYIFRM=0&PLAYFILE=/record/hd000/STV00004.DAT:1774889412_1774890012:535807432_535797208:426758946&PLAYBEG=0&PLAYEND=0&PLAYCHN=0&YEAR=26&MON=3&DAY=30"
+        },
+        {
+            "arm": 0,
+            "arm1": 0,
+            "arm2": 0,
+            "beg": 60012,
+            "chn": 4,
+            "chnMask": 0,
+            "clientIp": "119.23.207.22",
+            "clientIp2": "119.23.207.22",
+            "clientIp3": "119.23.207.22",
+            "clientPort": 6604,
+            "day": 30,
+            "devIdno": "211163",
+            "end": 60612,
+            "file": "/record/hd000/STV00004.DAT:1774888812_1774889412:535817608_535807432:253259096",
+            "label": null,
+            "lanip": "127.0.0.1",
+            "len": 172960446,
+            "loc": 1,
+            "mon": 3,
+            "mulChn": 0,
+            "mulPlay": 0,
+            "recing": 0,
+            "res": 0,
+            "store": 0,
+            "stream": 1,
+            "streamType": 0,
+            "svr": 0,
+            "type": 0,
+            "year": 26,
+            "mediaType": null,
+            "sourceId": null,
+            "DownTaskUrl": "http://119.23.207.22:80/StandardApiAction_addDownloadTask.action?jsession=c372d3447b4446f9a5aca8c588dc8ab7&did=211163&fbtm=2026-03-30 16:40:12&fetm=2026-03-30 16:50:12&sbtm=2026-03-30 16:40:12&setm=2026-03-30 16:50:12&lab=&fph=/record/hd000/STV00004.DAT:1774888812_1774889412:535817608_535807432:253259096&vtp=0&len=172960446&chn=4&dtp=2",
+            "DownUrl": "http://119.23.207.22:6604/3/5?DownType=3&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FLENGTH=172960446&FOFFSET=0&MTYPE=1&FPATH=/record/hd000/STV00004.DAT:1774888812_1774889412:535817608_535807432:253259096&SAVENAME=",
+            "PlaybackUrl": "http://119.23.207.22:6604/3/5?DownType=5&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FILESVR=0&FILECHN=4&FILEBEG=60012&FILEEND=60612&PLAYIFRM=0&PLAYFILE=/record/hd000/STV00004.DAT:1774888812_1774889412:535817608_535807432:253259096&PLAYBEG=0&PLAYEND=0&PLAYCHN=0&YEAR=26&MON=3&DAY=30",
+            "PlaybackUrlWs": "ws://119.23.207.22:6604/3/5?DownType=5&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FILESVR=0&FILECHN=4&FILEBEG=60012&FILEEND=60612&PLAYIFRM=0&PLAYFILE=/record/hd000/STV00004.DAT:1774888812_1774889412:535817608_535807432:253259096&PLAYBEG=0&PLAYEND=0&PLAYCHN=0&YEAR=26&MON=3&DAY=30"
+        },
+        {
+            "arm": 0,
+            "arm1": 0,
+            "arm2": 0,
+            "beg": 60612,
+            "chn": 3,
+            "chnMask": 0,
+            "clientIp": "119.23.207.22",
+            "clientIp2": "119.23.207.22",
+            "clientIp3": "119.23.207.22",
+            "clientPort": 6604,
+            "day": 30,
+            "devIdno": "211163",
+            "end": 61212,
+            "file": "/record/hd000/STV00003.DAT:1774889412_1774890012:535807432_535797208:528321557",
+            "label": null,
+            "lanip": "127.0.0.1",
+            "len": 214980764,
+            "loc": 1,
+            "mon": 3,
+            "mulChn": 0,
+            "mulPlay": 0,
+            "recing": 0,
+            "res": 0,
+            "store": 0,
+            "stream": 1,
+            "streamType": 0,
+            "svr": 0,
+            "type": 0,
+            "year": 26,
+            "mediaType": null,
+            "sourceId": null,
+            "DownTaskUrl": "http://119.23.207.22:80/StandardApiAction_addDownloadTask.action?jsession=c372d3447b4446f9a5aca8c588dc8ab7&did=211163&fbtm=2026-03-30 16:50:12&fetm=2026-03-30 17:00:12&sbtm=2026-03-30 16:50:12&setm=2026-03-30 17:00:12&lab=&fph=/record/hd000/STV00003.DAT:1774889412_1774890012:535807432_535797208:528321557&vtp=0&len=214980764&chn=3&dtp=2",
+            "DownUrl": "http://119.23.207.22:6604/3/5?DownType=3&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FLENGTH=214980764&FOFFSET=0&MTYPE=1&FPATH=/record/hd000/STV00003.DAT:1774889412_1774890012:535807432_535797208:528321557&SAVENAME=",
+            "PlaybackUrl": "http://119.23.207.22:6604/3/5?DownType=5&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FILESVR=0&FILECHN=3&FILEBEG=60612&FILEEND=61212&PLAYIFRM=0&PLAYFILE=/record/hd000/STV00003.DAT:1774889412_1774890012:535807432_535797208:528321557&PLAYBEG=0&PLAYEND=0&PLAYCHN=0&YEAR=26&MON=3&DAY=30",
+            "PlaybackUrlWs": "ws://119.23.207.22:6604/3/5?DownType=5&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FILESVR=0&FILECHN=3&FILEBEG=60612&FILEEND=61212&PLAYIFRM=0&PLAYFILE=/record/hd000/STV00003.DAT:1774889412_1774890012:535807432_535797208:528321557&PLAYBEG=0&PLAYEND=0&PLAYCHN=0&YEAR=26&MON=3&DAY=30"
+        },
+        {
+            "arm": 0,
+            "arm1": 0,
+            "arm2": 0,
+            "beg": 60012,
+            "chn": 3,
+            "chnMask": 0,
+            "clientIp": "119.23.207.22",
+            "clientIp2": "119.23.207.22",
+            "clientIp3": "119.23.207.22",
+            "clientPort": 6604,
+            "day": 30,
+            "devIdno": "211163",
+            "end": 60612,
+            "file": "/record/hd000/STV00003.DAT:1774888812_1774889412:535817608_535807432:313340793",
+            "label": null,
+            "lanip": "127.0.0.1",
+            "len": 214390406,
+            "loc": 1,
+            "mon": 3,
+            "mulChn": 0,
+            "mulPlay": 0,
+            "recing": 0,
+            "res": 0,
+            "store": 0,
+            "stream": 1,
+            "streamType": 0,
+            "svr": 0,
+            "type": 0,
+            "year": 26,
+            "mediaType": null,
+            "sourceId": null,
+            "DownTaskUrl": "http://119.23.207.22:80/StandardApiAction_addDownloadTask.action?jsession=c372d3447b4446f9a5aca8c588dc8ab7&did=211163&fbtm=2026-03-30 16:40:12&fetm=2026-03-30 16:50:12&sbtm=2026-03-30 16:40:12&setm=2026-03-30 16:50:12&lab=&fph=/record/hd000/STV00003.DAT:1774888812_1774889412:535817608_535807432:313340793&vtp=0&len=214390406&chn=3&dtp=2",
+            "DownUrl": "http://119.23.207.22:6604/3/5?DownType=3&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FLENGTH=214390406&FOFFSET=0&MTYPE=1&FPATH=/record/hd000/STV00003.DAT:1774888812_1774889412:535817608_535807432:313340793&SAVENAME=",
+            "PlaybackUrl": "http://119.23.207.22:6604/3/5?DownType=5&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FILESVR=0&FILECHN=3&FILEBEG=60012&FILEEND=60612&PLAYIFRM=0&PLAYFILE=/record/hd000/STV00003.DAT:1774888812_1774889412:535817608_535807432:313340793&PLAYBEG=0&PLAYEND=0&PLAYCHN=0&YEAR=26&MON=3&DAY=30",
+            "PlaybackUrlWs": "ws://119.23.207.22:6604/3/5?DownType=5&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FILESVR=0&FILECHN=3&FILEBEG=60012&FILEEND=60612&PLAYIFRM=0&PLAYFILE=/record/hd000/STV00003.DAT:1774888812_1774889412:535817608_535807432:313340793&PLAYBEG=0&PLAYEND=0&PLAYCHN=0&YEAR=26&MON=3&DAY=30"
+        },
+        {
+            "arm": 0,
+            "arm1": 0,
+            "arm2": 0,
+            "beg": 60612,
+            "chn": 2,
+            "chnMask": 0,
+            "clientIp": "119.23.207.22",
+            "clientIp2": "119.23.207.22",
+            "clientIp3": "119.23.207.22",
+            "clientPort": 6604,
+            "day": 30,
+            "devIdno": "211163",
+            "end": 61212,
+            "file": "/record/hd000/STV00002.DAT:1774889412_1774890012:535807432_535797208:530632924",
+            "label": null,
+            "lanip": "127.0.0.1",
+            "len": 217863883,
+            "loc": 1,
+            "mon": 3,
+            "mulChn": 0,
+            "mulPlay": 0,
+            "recing": 0,
+            "res": 0,
+            "store": 0,
+            "stream": 1,
+            "streamType": 0,
+            "svr": 0,
+            "type": 0,
+            "year": 26,
+            "mediaType": null,
+            "sourceId": null,
+            "DownTaskUrl": "http://119.23.207.22:80/StandardApiAction_addDownloadTask.action?jsession=c372d3447b4446f9a5aca8c588dc8ab7&did=211163&fbtm=2026-03-30 16:50:12&fetm=2026-03-30 17:00:12&sbtm=2026-03-30 16:50:12&setm=2026-03-30 17:00:12&lab=&fph=/record/hd000/STV00002.DAT:1774889412_1774890012:535807432_535797208:530632924&vtp=0&len=217863883&chn=2&dtp=2",
+            "DownUrl": "http://119.23.207.22:6604/3/5?DownType=3&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FLENGTH=217863883&FOFFSET=0&MTYPE=1&FPATH=/record/hd000/STV00002.DAT:1774889412_1774890012:535807432_535797208:530632924&SAVENAME=",
+            "PlaybackUrl": "http://119.23.207.22:6604/3/5?DownType=5&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FILESVR=0&FILECHN=2&FILEBEG=60612&FILEEND=61212&PLAYIFRM=0&PLAYFILE=/record/hd000/STV00002.DAT:1774889412_1774890012:535807432_535797208:530632924&PLAYBEG=0&PLAYEND=0&PLAYCHN=0&YEAR=26&MON=3&DAY=30",
+            "PlaybackUrlWs": "ws://119.23.207.22:6604/3/5?DownType=5&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FILESVR=0&FILECHN=2&FILEBEG=60612&FILEEND=61212&PLAYIFRM=0&PLAYFILE=/record/hd000/STV00002.DAT:1774889412_1774890012:535807432_535797208:530632924&PLAYBEG=0&PLAYEND=0&PLAYCHN=0&YEAR=26&MON=3&DAY=30"
+        },
+        {
+            "arm": 0,
+            "arm1": 0,
+            "arm2": 0,
+            "beg": 60012,
+            "chn": 2,
+            "chnMask": 0,
+            "clientIp": "119.23.207.22",
+            "clientIp2": "119.23.207.22",
+            "clientIp3": "119.23.207.22",
+            "clientPort": 6604,
+            "day": 30,
+            "devIdno": "211163",
+            "end": 60612,
+            "file": "/record/hd000/STV00002.DAT:1774888812_1774889412:535817608_535807432:312769041",
+            "label": null,
+            "lanip": "127.0.0.1",
+            "len": 211795859,
+            "loc": 1,
+            "mon": 3,
+            "mulChn": 0,
+            "mulPlay": 0,
+            "recing": 0,
+            "res": 0,
+            "store": 0,
+            "stream": 1,
+            "streamType": 0,
+            "svr": 0,
+            "type": 0,
+            "year": 26,
+            "mediaType": null,
+            "sourceId": null,
+            "DownTaskUrl": "http://119.23.207.22:80/StandardApiAction_addDownloadTask.action?jsession=c372d3447b4446f9a5aca8c588dc8ab7&did=211163&fbtm=2026-03-30 16:40:12&fetm=2026-03-30 16:50:12&sbtm=2026-03-30 16:40:12&setm=2026-03-30 16:50:12&lab=&fph=/record/hd000/STV00002.DAT:1774888812_1774889412:535817608_535807432:312769041&vtp=0&len=211795859&chn=2&dtp=2",
+            "DownUrl": "http://119.23.207.22:6604/3/5?DownType=3&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FLENGTH=211795859&FOFFSET=0&MTYPE=1&FPATH=/record/hd000/STV00002.DAT:1774888812_1774889412:535817608_535807432:312769041&SAVENAME=",
+            "PlaybackUrl": "http://119.23.207.22:6604/3/5?DownType=5&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FILESVR=0&FILECHN=2&FILEBEG=60012&FILEEND=60612&PLAYIFRM=0&PLAYFILE=/record/hd000/STV00002.DAT:1774888812_1774889412:535817608_535807432:312769041&PLAYBEG=0&PLAYEND=0&PLAYCHN=0&YEAR=26&MON=3&DAY=30",
+            "PlaybackUrlWs": "ws://119.23.207.22:6604/3/5?DownType=5&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FILESVR=0&FILECHN=2&FILEBEG=60012&FILEEND=60612&PLAYIFRM=0&PLAYFILE=/record/hd000/STV00002.DAT:1774888812_1774889412:535817608_535807432:312769041&PLAYBEG=0&PLAYEND=0&PLAYCHN=0&YEAR=26&MON=3&DAY=30"
+        },
+        {
+            "arm": 0,
+            "arm1": 0,
+            "arm2": 0,
+            "beg": 60612,
+            "chn": 1,
+            "chnMask": 0,
+            "clientIp": "119.23.207.22",
+            "clientIp2": "119.23.207.22",
+            "clientIp3": "119.23.207.22",
+            "clientPort": 6604,
+            "day": 30,
+            "devIdno": "211163",
+            "end": 61212,
+            "file": "/record/hd000/STV00001.DAT:1774889412_1774890012:535807432_535797208:523939957",
+            "label": null,
+            "lanip": "127.0.0.1",
+            "len": 213110170,
+            "loc": 1,
+            "mon": 3,
+            "mulChn": 0,
+            "mulPlay": 0,
+            "recing": 0,
+            "res": 0,
+            "store": 0,
+            "stream": 1,
+            "streamType": 0,
+            "svr": 0,
+            "type": 0,
+            "year": 26,
+            "mediaType": null,
+            "sourceId": null,
+            "DownTaskUrl": "http://119.23.207.22:80/StandardApiAction_addDownloadTask.action?jsession=c372d3447b4446f9a5aca8c588dc8ab7&did=211163&fbtm=2026-03-30 16:50:12&fetm=2026-03-30 17:00:12&sbtm=2026-03-30 16:50:12&setm=2026-03-30 17:00:12&lab=&fph=/record/hd000/STV00001.DAT:1774889412_1774890012:535807432_535797208:523939957&vtp=0&len=213110170&chn=1&dtp=2",
+            "DownUrl": "http://119.23.207.22:6604/3/5?DownType=3&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FLENGTH=213110170&FOFFSET=0&MTYPE=1&FPATH=/record/hd000/STV00001.DAT:1774889412_1774890012:535807432_535797208:523939957&SAVENAME=",
+            "PlaybackUrl": "http://119.23.207.22:6604/3/5?DownType=5&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FILESVR=0&FILECHN=1&FILEBEG=60612&FILEEND=61212&PLAYIFRM=0&PLAYFILE=/record/hd000/STV00001.DAT:1774889412_1774890012:535807432_535797208:523939957&PLAYBEG=0&PLAYEND=0&PLAYCHN=0&YEAR=26&MON=3&DAY=30",
+            "PlaybackUrlWs": "ws://119.23.207.22:6604/3/5?DownType=5&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FILESVR=0&FILECHN=1&FILEBEG=60612&FILEEND=61212&PLAYIFRM=0&PLAYFILE=/record/hd000/STV00001.DAT:1774889412_1774890012:535807432_535797208:523939957&PLAYBEG=0&PLAYEND=0&PLAYCHN=0&YEAR=26&MON=3&DAY=30"
+        },
+        {
+            "arm": 0,
+            "arm1": 0,
+            "arm2": 0,
+            "beg": 60012,
+            "chn": 1,
+            "chnMask": 0,
+            "clientIp": "119.23.207.22",
+            "clientIp2": "119.23.207.22",
+            "clientIp3": "119.23.207.22",
+            "clientPort": 6604,
+            "day": 30,
+            "devIdno": "211163",
+            "end": 60612,
+            "file": "/record/hd000/STV00001.DAT:1774888812_1774889412:535817608_535807432:310829787",
+            "label": null,
+            "lanip": "127.0.0.1",
+            "len": 211624721,
+            "loc": 1,
+            "mon": 3,
+            "mulChn": 0,
+            "mulPlay": 0,
+            "recing": 0,
+            "res": 0,
+            "store": 0,
+            "stream": 1,
+            "streamType": 0,
+            "svr": 0,
+            "type": 0,
+            "year": 26,
+            "mediaType": null,
+            "sourceId": null,
+            "DownTaskUrl": "http://119.23.207.22:80/StandardApiAction_addDownloadTask.action?jsession=c372d3447b4446f9a5aca8c588dc8ab7&did=211163&fbtm=2026-03-30 16:40:12&fetm=2026-03-30 16:50:12&sbtm=2026-03-30 16:40:12&setm=2026-03-30 16:50:12&lab=&fph=/record/hd000/STV00001.DAT:1774888812_1774889412:535817608_535807432:310829787&vtp=0&len=211624721&chn=1&dtp=2",
+            "DownUrl": "http://119.23.207.22:6604/3/5?DownType=3&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FLENGTH=211624721&FOFFSET=0&MTYPE=1&FPATH=/record/hd000/STV00001.DAT:1774888812_1774889412:535817608_535807432:310829787&SAVENAME=",
+            "PlaybackUrl": "http://119.23.207.22:6604/3/5?DownType=5&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FILESVR=0&FILECHN=1&FILEBEG=60012&FILEEND=60612&PLAYIFRM=0&PLAYFILE=/record/hd000/STV00001.DAT:1774888812_1774889412:535817608_535807432:310829787&PLAYBEG=0&PLAYEND=0&PLAYCHN=0&YEAR=26&MON=3&DAY=30",
+            "PlaybackUrlWs": "ws://119.23.207.22:6604/3/5?DownType=5&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FILESVR=0&FILECHN=1&FILEBEG=60012&FILEEND=60612&PLAYIFRM=0&PLAYFILE=/record/hd000/STV00001.DAT:1774888812_1774889412:535817608_535807432:310829787&PLAYBEG=0&PLAYEND=0&PLAYCHN=0&YEAR=26&MON=3&DAY=30"
+        },
+        {
+            "arm": 0,
+            "arm1": 0,
+            "arm2": 0,
+            "beg": 60613,
+            "chn": 0,
+            "chnMask": 0,
+            "clientIp": "119.23.207.22",
+            "clientIp2": "119.23.207.22",
+            "clientIp3": "119.23.207.22",
+            "clientPort": 6604,
+            "day": 30,
+            "devIdno": "211163",
+            "end": 61214,
+            "file": "/record/hd000/STV00000.DAT:1774889413_1774890014:535807408_535797184:527938197",
+            "label": null,
+            "lanip": "127.0.0.1",
+            "len": 213410435,
+            "loc": 1,
+            "mon": 3,
+            "mulChn": 0,
+            "mulPlay": 0,
+            "recing": 0,
+            "res": 0,
+            "store": 0,
+            "stream": 1,
+            "streamType": 0,
+            "svr": 0,
+            "type": 0,
+            "year": 26,
+            "mediaType": null,
+            "sourceId": null,
+            "DownTaskUrl": "http://119.23.207.22:80/StandardApiAction_addDownloadTask.action?jsession=c372d3447b4446f9a5aca8c588dc8ab7&did=211163&fbtm=2026-03-30 16:50:13&fetm=2026-03-30 17:00:14&sbtm=2026-03-30 16:50:13&setm=2026-03-30 17:00:14&lab=&fph=/record/hd000/STV00000.DAT:1774889413_1774890014:535807408_535797184:527938197&vtp=0&len=213410435&chn=0&dtp=2",
+            "DownUrl": "http://119.23.207.22:6604/3/5?DownType=3&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FLENGTH=213410435&FOFFSET=0&MTYPE=1&FPATH=/record/hd000/STV00000.DAT:1774889413_1774890014:535807408_535797184:527938197&SAVENAME=",
+            "PlaybackUrl": "http://119.23.207.22:6604/3/5?DownType=5&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FILESVR=0&FILECHN=0&FILEBEG=60613&FILEEND=61214&PLAYIFRM=0&PLAYFILE=/record/hd000/STV00000.DAT:1774889413_1774890014:535807408_535797184:527938197&PLAYBEG=0&PLAYEND=0&PLAYCHN=0&YEAR=26&MON=3&DAY=30",
+            "PlaybackUrlWs": "ws://119.23.207.22:6604/3/5?DownType=5&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FILESVR=0&FILECHN=0&FILEBEG=60613&FILEEND=61214&PLAYIFRM=0&PLAYFILE=/record/hd000/STV00000.DAT:1774889413_1774890014:535807408_535797184:527938197&PLAYBEG=0&PLAYEND=0&PLAYCHN=0&YEAR=26&MON=3&DAY=30"
+        },
+        {
+            "arm": 0,
+            "arm1": 0,
+            "arm2": 0,
+            "beg": 60012,
+            "chn": 0,
+            "chnMask": 0,
+            "clientIp": "119.23.207.22",
+            "clientIp2": "119.23.207.22",
+            "clientIp3": "119.23.207.22",
+            "clientPort": 6604,
+            "day": 30,
+            "devIdno": "211163",
+            "end": 60613,
+            "file": "/record/hd000/STV00000.DAT:1774888812_1774889413:535817608_535807408:314527762",
+            "label": null,
+            "lanip": "127.0.0.1",
+            "len": 214974045,
+            "loc": 1,
+            "mon": 3,
+            "mulChn": 0,
+            "mulPlay": 0,
+            "recing": 0,
+            "res": 0,
+            "store": 0,
+            "stream": 1,
+            "streamType": 0,
+            "svr": 0,
+            "type": 0,
+            "year": 26,
+            "mediaType": null,
+            "sourceId": null,
+            "DownTaskUrl": "http://119.23.207.22:80/StandardApiAction_addDownloadTask.action?jsession=c372d3447b4446f9a5aca8c588dc8ab7&did=211163&fbtm=2026-03-30 16:40:12&fetm=2026-03-30 16:50:13&sbtm=2026-03-30 16:40:12&setm=2026-03-30 16:50:13&lab=&fph=/record/hd000/STV00000.DAT:1774888812_1774889413:535817608_535807408:314527762&vtp=0&len=214974045&chn=0&dtp=2",
+            "DownUrl": "http://119.23.207.22:6604/3/5?DownType=3&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FLENGTH=214974045&FOFFSET=0&MTYPE=1&FPATH=/record/hd000/STV00000.DAT:1774888812_1774889413:535817608_535807408:314527762&SAVENAME=",
+            "PlaybackUrl": "http://119.23.207.22:6604/3/5?DownType=5&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FILESVR=0&FILECHN=0&FILEBEG=60012&FILEEND=60613&PLAYIFRM=0&PLAYFILE=/record/hd000/STV00000.DAT:1774888812_1774889413:535817608_535807408:314527762&PLAYBEG=0&PLAYEND=0&PLAYCHN=0&YEAR=26&MON=3&DAY=30",
+            "PlaybackUrlWs": "ws://119.23.207.22:6604/3/5?DownType=5&jsession=c372d3447b4446f9a5aca8c588dc8ab7&DevIDNO=211163&FILELOC=1&FILESVR=0&FILECHN=0&FILEBEG=60012&FILEEND=60613&PLAYIFRM=0&PLAYFILE=/record/hd000/STV00000.DAT:1774888812_1774889413:535817608_535807408:314527762&PLAYBEG=0&PLAYEND=0&PLAYCHN=0&YEAR=26&MON=3&DAY=30"
+        }
+    ],
+    "cmsserver": 1
+}

@@ -1,0 +1,48 @@
+================ Interface Description : Live Video =================
+
+API URL : http://119.23.207.22/808gps/open/player/video.html?
+Method  : GET
+
+---------------------------------------------------------------
+Parameter       Value               Description
+---------------------------------------------------------------
+lang            en                  Language (en = English)
+devIdno         211163              Device ID number
+jsession        <session_id>        Session ID from login API
+---------------------------------------------------------------
+
+
+================ Example URL ===============================
+
+http://119.23.207.22/808gps/open/player/video.html?lang=en&devIdno=211163&jsession=cf6b70a3-c82b-4392-8ab6-bbddce336222
+
+
+================ Explanation =================================
+
+- lang     : Language parameter (en = English interface)
+- devIdno  : Unique device ID used to fetch live video
+- jsession : Session token obtained from login API (mandatory)
+
+
+================ Notes ========================================
+
+- jsession must be taken from Login API response
+- Live video will not load without valid session
+- Ensure device is online and streaming is enabled
+
+===============================================================
+
+
+================ Correct Result =================
+
+API URL : http://119.23.207.22/808gps/open/player/video.html?lang=en&devIdno=211163&jsession=eca7ade4279848c3986faf124e522d35
+Method  : POST
+
+-------------------------------------------------------------------------------
+Parameter       Value                                   Description
+-------------------------------------------------------------------------------
+lang            en                                      Language (en = English)
+devIdno         211163                                  Device ID number
+jsession        eca7ade4279848c3986faf124e522d35        Session ID from login API
+---------------------------------------------------------------------------------
+

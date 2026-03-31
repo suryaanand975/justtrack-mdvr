@@ -1,0 +1,204 @@
+================ Interface Description : Get Device Status (GPS) =================
+
+API URL : http://119.23.207.22/StandardApiAction_getDeviceStatus.action?
+Method  : GET / POST
+
+---------------------------------------------------------------
+Parameter       Value               Description
+---------------------------------------------------------------
+jsession        <session_id>        Session ID from login API (Required)
+devIdno         500000              Device ID (comma separated for multiple)
+vehiIdno        <optional>          Vehicle plate number (if devIdno empty)
+geoaddress      1                   Enable geo location analysis (1 = yes)
+driver          1                   Get driver info (1 = yes)
+toMap           1                   Map conversion (1=Google, 2=Baidu)
+language        zh                  Language (zh = Chinese, en = English)
+---------------------------------------------------------------
+
+
+================ Request Example =================
+
+http://119.23.207.22/StandardApiAction_getDeviceStatus.action?jsession=cf6b70a3-c82b-4392-8ab6-bbddce336222&devIdno=500000&toMap=1&language=zh
+
+
+================ Success Response =================
+
+{
+  "result": 0,
+  "status": [
+    {
+      "id": "500000",
+      "vid": null,
+      "lng": 113921858,
+      "lat": 22568745,
+      "sp": 520,
+      "ol": 0,
+      "gt": "2015-12-14 18:54:58.0",
+      "mlng": "113.926720",
+      "mlat": "22.565703",
+      "ps": "113.926720,22.565703"
+    }
+  ]
+}
+
+Explanation:
+- result : 0 → Request successful
+- id     : Device ID
+- vid    : Vehicle number (null if queried by device)
+- lng/lat: Raw GPS coordinates (divide by 1,000,000)
+- sp     : Speed (divide by 10 → km/h)
+- ol     : Online status (1 = online, 0 = offline)
+- gt     : GPS upload time
+- mlng/mlat : Converted map coordinates
+- ps     : Geo location (longitude, latitude)
+
+
+================ Notes ======================================
+
+- jsession must be obtained from Login API
+- devIdno and vehiIdno support multiple values (comma separated)
+- If devIdno is empty, vehiIdno will be used
+- Speed and fuel values require conversion before use
+
+===============================================================
+
+
+
+================ Correct Result =====================================
+
+API URL : http://119.23.207.22/StandardApiAction_getDeviceStatus.action?jsession=eca7ade4279848c3986faf124e522d35&devIdno=211163&toMap=1&language=zh
+Method  : POST
+
+-----------------------------------------------------------------------------------------------
+Parameter       Value                                   Description
+-----------------------------------------------------------------------------------------------
+jsession        eca7ade4279848c3986faf124e522d35        Session ID from login API (Required)
+devIdno         211163                                  Device ID (comma separated for multiple)
+toMap           1                                       Map conversion (1=Google, 2=Baidu)
+language        zh                                      Language (zh = Chinese, en = English)
+-------------------------------------------------------------------------------------------------
+
+Response :
+{
+    "result": 0,
+    "status": [
+        {
+            "id": "211163",
+            "net": 3,
+            "netn": null,
+            "gw": "G1",
+            "ol": 1,
+            "s1": 11651,
+            "s2": 0,
+            "s3": 65280,
+            "s4": 0,
+            "t1": 0,
+            "t2": 0,
+            "t3": 0,
+            "t4": 0,
+            "yl": 0,
+            "sp": 0,
+            "hx": 0,
+            "lng": 77573188,
+            "lat": 12994343,
+            "mlng": "77.573188",
+            "mlat": "12.994343",
+            "ps": "12.994343,77.573188",
+            "pk": 5030,
+            "lc": 0,
+            "gt": "2026-03-31 16:41:22.0",
+            "gte": null,
+            "upt": null,
+            "pt": 1,
+            "dt": 1,
+            "ac": 18,
+            "ft": 33,
+            "fdt": 33,
+            "vid": "211163",
+            "vi": null,
+            "imei": null,
+            "imsi": null,
+            "hv": null,
+            "sv": null,
+            "lid": 0,
+            "drid": 0,
+            "dct": 0,
+            "sfg": 0,
+            "snm": 0,
+            "sst": 0,
+            "or": 0,
+            "os": 0,
+            "ov": 123,
+            "ojt": 0,
+            "ost": 0,
+            "ojm": 0,
+            "po": null,
+            "ef": 0,
+            "p1": 0,
+            "p2": 0,
+            "p3": 0,
+            "p4": 0,
+            "p5": 0,
+            "p6": 0,
+            "p7": 0,
+            "p8": 0,
+            "p9": 0,
+            "p10": 0,
+            "glng": null,
+            "glat": null,
+            "dn": null,
+            "jn": null,
+            "lt": 0,
+            "tsp": 0,
+            "abbr": "",
+            "ust": null,
+            "lg": 2,
+            "rt": null,
+            "ls": -2113929216,
+            "ct": 0,
+            "ios": 0,
+            "es": 0,
+            "aq": 671088640,
+            "adas1": 0,
+            "adas2": 0,
+            "dsm1": 0,
+            "dsm2": 0,
+            "bsd1": 0,
+            "bsd2": 0,
+            "fvs": 0,
+            "dst": 0,
+            "rfd": 0,
+            "dvt": 0,
+            "rft": 0,
+            "fl": 0,
+            "yn": 0,
+            "cet": 0,
+            "wc": 0,
+            "tp": "000000000000000000000000000000000000000000000000000000000000",
+            "pss": "'",
+            "sn": 0,
+            "driSw": null,
+            "driJn": null,
+            "driSwStr": null,
+            "dinfo": null,
+            "clockd": null,
+            "pu": 0,
+            "pd": 0,
+            "pc": 0,
+            "gd": 904,
+            "tyreData": null,
+            "wayBill": null,
+            "viceYl": 0.0,
+            "simulationYL": null,
+            "water": null,
+            "tm": null,
+            "lcVal": null,
+            "lcValGps": null,
+            "driftGps": null,
+            "ifSupplement": false,
+            "capture": null,
+            "auxiliaryTankSupport": false,
+            "parseAuxiliaryTankSupport": false
+        }
+    ]
+}

@@ -1,0 +1,134 @@
+================ Interface Description : Download Video =================
+
+API URL : http://119.23.207.22/StandardApiAction_addDownloadTask.action?
+Method  : GET / POST
+
+---------------------------------------------------------------
+Parameter       Value               Description
+---------------------------------------------------------------
+jsession        <session_id>        Session ID from login API
+did             500000              Device ID
+fbtm            2015-12-25 00:00:00 File Begin Time (within file range)
+fetm            2015-12-30 23:59:59 File End Time (within file range)
+sbtm            2015-12-25 00:00:00 Source File Start Time
+setm            2015-12-30 23:59:59 Source File End Time
+lab             downloadExample     File label (optional)
+fph             H20121123-112931P3A1P0.avi File path/name
+vtp             1                   Record type (0=normal,1=alarm)
+len             5000                File size (bytes)
+chn             1                   Channel number
+dtp             1                   Download type (1=full,2=segment)
+---------------------------------------------------------------
+
+
+================ Request Example =================
+
+http://119.23.207.22/StandardApiAction_addDownloadTask.action?jsession=cf6b70a3-c82b-4392-8ab6-bbddce336222&did=500000&fbtm=2015-12-25 00:00:00&fetm=2015-12-30 23:59:59&sbtm=2015-12-25 00:00:00&setm=2015-12-30 23:59:59&lab=downloadExample&fph=H20121123-112931P3A1P0.avi&vtp=1&len=5000&chn=1&dtp=1
+
+
+================ Explanation =================
+
+- jsession : Session token from Login API (mandatory)
+- did      : Device ID
+- fbtm     : Requested download start time
+- fetm     : Requested download end time
+- sbtm     : Source file start time
+- setm     : Source file end time
+- lab      : Optional label for download task
+- fph      : File path/name from query video API
+- vtp      : Record type (0=normal,1=alarm)
+- len      : File size in bytes
+- chn      : Channel number
+- dtp      : Download type
+             1 → Full download
+             2 → Segment download
+
+
+================ Notes ==============================================
+
+- Segment download is supported for all devices
+- Full download supported only for specific device types (16,17,20,22)
+- If video has multiple channels → only segment download allowed
+- fbtm/fetm must be within sbtm/setm range
+- File path (fph) should be taken from Query Video API response
+- This API creates a download task, not direct file download
+
+===============================================================
+
+
+
+
+
+================ Correct Result =====================================
+
+API URL : http://119.23.207.22/StandardApiAction_addDownloadTask.action?jsession=c372d3447b4446f9a5aca8c588dc8ab7&did=211163&fbtm=2026-03-26 23:33:56&fetm=2026-03-26 23:36:13&sbtm=2026-03-26 23:33:56&setm=2026-03-26 23:36:13&lab=downloadExample&fph=D:/gStorage/RECORD_FILE/211163/2026-03-30/211163_0-260330-163707-163723-20020300.grec&vtp=1&len=54512477&chn=3&dtp=2
+Method  : POST
+
+
+--------------------------------------------------------------------------------------------
+Parameter       Value                                   Description
+---------------------------------------------------------------------------------------------
+jsession        c372d3447b4446f9a5aca8c588dc8ab7        Session ID from login API
+did             211163                                  Device ID
+fbtm            2026-03-26 23:33:56                     File Begin Time (within file range)
+fetm            2026-03-26 23:36:13                     File End Time (within file range)
+sbtm            2026-03-26 23:33:56                     Source File Start Time
+setm            2026-03-26 23:36:13                     Source File End Time
+lab             downloadExample                         File label (optional)
+fph             D:/gStorage/RECORD_FILE/211163/
+                2026-03-30/211163_0-260330-163707-
+                163723-20020300.grec                    File path/name
+
+vtp             1                                       Record type (0=normal,1=alarm)
+len             54512477                                File size (bytes)
+chn             3                                       Channel number
+dtp             2                                       Download type (1=full,2=segment)
+-----------------------------------------------------------------------------------------------
+
+
+Response :
+
+{
+    "result": 11,
+    "oldTaskAll": {
+        "id": 84199,
+        "did": "211163",
+        "ftp": 2,
+        "fph": "D:/gStorage/RECORD_FILE/211163/2026-03-30/211163_0-260330-163707-163723-20020300.grec",
+        "ctm": 1774875824000,
+        "fbtm": 1774539236000,
+        "fetm": 1774539373000,
+        "vtp": 1,
+        "len": 54512477,
+        "chn": 3,
+        "stu": 3,
+        "err": 62,
+        "dbtm": 1774878380000,
+        "detm": 1774878380000,
+        "dph": "D:/gStorage/RECORD_FILE/211163/2026-03-26/211163_0-260326-233356-233613-20020400.grec",
+        "svr": 7,
+        "dtp": 2,
+        "uid": 229,
+        "lab": "downloadExample",
+        "sbtm": 1774539236000,
+        "setm": 1774539373000,
+        "nfbtm": 1774539236,
+        "nfetm": 1774539373,
+        "guid": null,
+        "downUrl": null,
+        "playbackUrl": null,
+        "lanip": null,
+        "clientIp": null,
+        "clientIp2": null,
+        "clientIp3": null,
+        "clientPort": null,
+        "fbtmStr": "2026-03-26 23:33:56",
+        "fetmStr": "2026-03-26 23:36:13",
+        "dbtmStr": "2026-03-30 21:46:20",
+        "detmStr": "2026-03-30 21:46:20",
+        "sbtmStr": "2026-03-26 23:33:56",
+        "setmStr": "2026-03-26 23:36:13"
+    },
+    "message": "Download task already exists!",
+    "oldTaskReal": null
+}
