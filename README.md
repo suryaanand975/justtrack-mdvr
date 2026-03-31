@@ -35,6 +35,3 @@ JustTrack MDVR is a high-performance server designed for real-time communication
 0704 → Bulk Data
 0801 → Multimedia Upload
 0900 → Custom Data
-git clone https://github.com/your-username/justtrack-mdvr.git
-cd justtrack-mdvr
-python main.py
